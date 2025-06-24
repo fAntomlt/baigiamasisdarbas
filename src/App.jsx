@@ -1,13 +1,8 @@
-import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import AuthPage from './pages/AuthPage';
 
 const App = () => {
+  return <AuthPage />;
+};
 
-  return (
-    <>
-      
-    </>
-  )
-}
-
-export default App
+export default App;
