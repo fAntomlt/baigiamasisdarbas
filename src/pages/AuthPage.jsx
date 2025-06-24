@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import LoginForm from '../components/organisms/LoginForm';
-import bookImage from '../assets/book.jpg';
+import bookImage from '../assets/book.png';
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,8 +26,7 @@ const Content = styled.div`
 `;
 
 const Image = styled.img`
-  width: 45%;
-  max-height: 500px;
+  width: 35%;
   object-fit: contain;
 `;
 
