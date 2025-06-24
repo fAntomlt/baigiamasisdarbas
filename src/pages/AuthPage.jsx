@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color:rgb(205, 235, 253);
 `;
 
 const Header = styled.header`
@@ -20,7 +21,7 @@ const Content = styled.div`
   display: flex;
   flex: 1;
   padding: 2rem;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 `;
 
