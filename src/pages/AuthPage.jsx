@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import LoginForm from '../components/organisms/LoginForm';
 import bookImage from '../assets/book.jpg';
 
 const Wrapper = styled.div`
