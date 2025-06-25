@@ -96,53 +96,52 @@ const RegisterForm = () => {
 
   return (
     <>
-      {success && (
-  <ModalOverlay>
-    <ModalBox>
-      <Checkmark>✔️</Checkmark>
-      <ModalTitle>Registracija sėkminga!</ModalTitle>
-      <ModalText>
-        Būsite nukreiptas į pagrindinį puslapį po 10 sekundžių.
-      </ModalText>
-      <OkButton onClick={() => window.location.href = '/'}>
-        Grįžti dabar
-      </OkButton>
-    </ModalBox>
-  </ModalOverlay>
-)}
-
-      <form onSubmit={handleRegister}>
-        <Input
-          type="text"
-          placeholder="Slapyvardis"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <Input
-          type="email"
-          placeholder="El. paštas"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Input
-          type="password"
-          placeholder="Slaptažodis"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <Input
-          type="text"
-          placeholder="Nuotraukos URL (neprivaloma)"
-          value={profilePic}
-          onChange={(e) => setProfilePic(e.target.value)}
-        />
-        <Button type="submit">
-          {loading ? '⏳' : 'Sukurti paskyrą'}
-        </Button>
-      </form>
+        {success && (
+            <ModalOverlay>
+                <ModalBox>
+                <Checkmark>✔️</Checkmark>
+                <ModalTitle>Registracija sėkminga!</ModalTitle>
+                <ModalText>
+                    Būsite nukreiptas į pagrindinį puslapį po 10 sekundžių.
+                </ModalText>
+                <OkButton onClick={() => window.location.href = '/'}>
+                    Grįžti dabar
+                </OkButton>
+                </ModalBox>
+            </ModalOverlay>
+        )}
+        <form onSubmit={handleRegister}>
+            <Input
+            type="text"
+            placeholder="Slapyvardis"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            />
+            <Input
+            type="email"
+            placeholder="El. paštas"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            />
+            <Input
+            type="password"
+            placeholder="Slaptažodis"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            />
+            <Input
+            type="text"
+            placeholder="Nuotraukos URL (neprivaloma)"
+            value={profilePic}
+            onChange={(e) => setProfilePic(e.target.value)}
+            />
+            <Button type="submit">
+            {loading ? '⏳' : 'Sukurti paskyrą'}
+            </Button>
+        </form>
     </>
   );
 };
