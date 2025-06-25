@@ -6,11 +6,11 @@ const Card = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1rem 1.2rem;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.2rem;
 `;
 
 const Avatar = styled.img`
@@ -18,6 +18,7 @@ const Avatar = styled.img`
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const Content = styled.div`
@@ -25,34 +26,48 @@ const Content = styled.div`
 `;
 
 const Question = styled.h3`
-  margin: 0 0 0.5rem 0;
+  margin: 0;
+  font-size: 1.07rem;
 `;
 
 const Meta = styled.p`
+  margin-top: 0.4rem;
   font-size: 0.85rem;
-  color: #555;
-  margin: 0;
+  color: #666;
 `;
 
 const Actions = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
+`;
+
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #444;
+  font-size: 1rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #1877f2;
+  }
 `;
 
 const QuestionCard = ({ question, user, date, avatar }) => {
   return (
     <Card>
-      <Avatar src={avatar} alt="avatar" />
+      <Avatar src={avatar} alt={`${user}'s avatar`} />
       <Content>
         <Question>{question}</Question>
         <Meta>Posted by {user} · {date}</Meta>
       </Content>
       <Actions>
-        <FaRegComment />
-        <FaThumbsUp />
-        <FaThumbsDown />
+        <IconButton><FaRegComment /></IconButton>
+        <IconButton><FaThumbsUp /></IconButton>
+        <IconButton><FaThumbsDown /></IconButton>
       </Actions>
     </Card>
   );
