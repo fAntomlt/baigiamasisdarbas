@@ -33,7 +33,45 @@ const getAllQuestions = async (req, res) => {
   }
 };
 
+const updateQuestion = async (req, res) => {
+  const { question } = req.body;
+
+  try {
+    const existing = await Question.findById(req.params.id);
+    if (!existing) return res.status(404).json({ message: 'Klausimas nerastas' });
+
+    if (existing.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Negalima redaguoti kito naudotojo klausimo' });
+    }
+
+    existing.question = question;
+    const updated = await existing.save();
+    const populated = await updated.populate('author', 'username profilePic');
+    res.status(200).json(populated);
+  } catch (err) {
+    res.status(500).json({ message: 'Nepavyko atnaujinti klausimo', error: err.message });
+  }
+};
+
+const deleteQuestion = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id);
+    if (!question) return res.status(404).json({ message: 'Klausimas nerastas' });
+
+    if (question.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Negalima ištrinti kito naudotojo klausimo' });
+    }
+
+    await question.deleteOne();
+    res.status(200).json({ message: 'Klausimas ištrintas sėkmingai' });
+  } catch (err) {
+    res.status(500).json({ message: 'Nepavyko ištrinti klausimo', error: err.message });
+  }
+};
+
 module.exports = {
   createQuestion,
   getAllQuestions,
+  updateQuestion,
+  deleteQuestion,
 };
