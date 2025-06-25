@@ -13,8 +13,9 @@ const Wrapper = styled.div`
 const Header = styled.header`
   padding: 2rem 0;
   text-align: center;
-  font-size: 3rem;
+  font-family: "Mouse Memoirs", sans-serif;
   font-weight: bold;
+  font-size: 8rem;
 `;
 
 const Content = styled.div`
