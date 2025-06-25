@@ -22,12 +22,13 @@ const Content = styled.div`
   display: flex;
   flex: 1;
   padding: 2rem;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 15rem;
   align-items: center;
 `;
 
 const Image = styled.img`
-  width: 35%;
+  width: 30%;
   object-fit: contain;
 `;
 
