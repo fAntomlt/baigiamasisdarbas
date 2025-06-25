@@ -5,7 +5,7 @@ import RegisterForm from '../components/organisms/RegisterForm';
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   min-height: 100vh;
   padding: 4rem 2rem;
   background-color: #e9ebee;
@@ -19,7 +19,7 @@ const LeftColumn = styled.div`
 `;
 
 const Logo = styled.h1`
-  font-size: 3rem;
+  font-size: 4.5rem;
   color:rgb(0, 0, 0);
   margin-bottom: 1rem;
 `;
