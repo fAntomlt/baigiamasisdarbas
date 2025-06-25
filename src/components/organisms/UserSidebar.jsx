@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 const Sidebar = styled.div`
@@ -37,12 +38,20 @@ const SettingsButton = styled.button`
 
 const UserSidebar = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSettingsClick = () => {
+    navigate('/settings');
+  };
 
   return (
     <Sidebar>
-      <Avatar src={user?.profilePic || 'https://ui-avatars.com/api/?name=User&background=random'} alt="profile" />
+      <Avatar
+        src={user?.profilePic || 'https://ui-avatars.com/api/?name=User&background=random'}
+        alt="profile"
+      />
       <Name>{user?.username || 'Vartotojas'}</Name>
-      <SettingsButton>Nustatymai</SettingsButton>
+      <SettingsButton onClick={handleSettingsClick}>Nustatymai</SettingsButton>
     </Sidebar>
   );
 };
