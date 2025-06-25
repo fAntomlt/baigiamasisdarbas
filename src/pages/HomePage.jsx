@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import QuestionFeed from '../components/organisms/QuestionFeed';
 import UserSidebar from '../components/organisms/UserSidebar';
 import headerBg from '../assets/header-pattern.png';
@@ -18,11 +20,13 @@ const Header = styled.header`
   padding: 1rem 2rem;
   font-size: 3rem;
   font-weight: bold;
-  overflow: hidden; /* Ensures background won't be clipped */
-    > * {
+  overflow: hidden;
+
+  > * {
     position: relative;
     z-index: 1;
   }
+
   &::before {
     content: '';
     position: absolute;
@@ -58,14 +62,38 @@ const SidebarSection = styled.aside`
 `;
 
 const HomePage = () => {
+  const { token } = useContext(AuthContext);
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/questions', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setQuestions(res.data);
+      } catch (err) {
+        console.error('Klaida gaunant klausimus:', err);
+      }
+    };
+
+    fetchQuestions();
+  }, [token]);
+
+  const handleQuestionCreated = (newQuestion) => {
+    setQuestions((prev) => [newQuestion, ...prev]);
+  };
+
   return (
     <PageWrapper>
       <Header><span>LifeBook</span></Header>
 
       <Content>
         <MainSection>
-          <NewQuestionForm />
-          <QuestionFeed />
+          <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
+          <QuestionFeed questions={questions} />
         </MainSection>
 
         <SidebarSection>

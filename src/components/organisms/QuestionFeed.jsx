@@ -9,37 +9,19 @@ const Wrapper = styled.div`
   gap: 1.5rem;
 `;
 
-const QuestionFeed = () => {
-  // Dummy list of questions for now
-  const questions = [
-    {
-      id: 1,
-      question: 'Kaip pradėti mokytis React?',
-      author: 'Jonas Petraitis',
-      date: '2025-06-25',
-      profilePic: '',
-      comments: 3,
-      likes: 5,
-      dislikes: 0,
-    },
-    {
-      id: 2,
-      question: 'Kokie yra geriausi MongoDB praktikavimo šaltiniai?',
-      author: 'Aistė Kazlauskaitė',
-      date: '2025-06-24',
-      profilePic: '',
-      comments: 1,
-      likes: 2,
-      dislikes: 0,
-    },
-  ];
-
+const QuestionFeed = ({ questions }) => {
   return (
     <Wrapper>
       <FilterBar />
 
       {questions.map((q) => (
-        <QuestionCard key={q.id} {...q} />
+        <QuestionCard
+          key={q._id}
+          question={q.question}
+          author={q.author?.username || 'Nežinomas'}
+          date={new Date(q.createdAt).toLocaleDateString()}
+          profilePic={q.author?.profilePic}
+        />
       ))}
     </Wrapper>
   );
