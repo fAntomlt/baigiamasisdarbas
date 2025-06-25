@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import AuthPage from './pages/AuthPage';
+import {AuthContext} from './context/AuthContext';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
-import {AuthContext} from './context/AuthContext';
+import AuthPage from './pages/AuthPage';
+import SettingsPage from './pages/SettingsPage';
 
 const PrivateRoute = ({ element: Element }) => {
   const { user } = useContext(AuthContext);
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/" element={<AuthPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<PrivateRoute element={HomePage} />} />
+        <Route path="/settings" element={<PrivateRoute element={SettingsPage} />} />
       </Routes>
     </Router>
   );
