@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import RegisterForm from '../components/organisms/RegisterForm';
+import registerWallpaper from '../assets/wallpaper2.jpg'
 
 const Wrapper = styled.div`
   display: flex;
@@ -8,7 +9,9 @@ const Wrapper = styled.div`
   align-items: center;
   min-height: 100vh;
   padding: 4rem 2rem;
-  background-color: #e9ebee;
+  background-image: url(${registerWallpaper});
+  background-size: cover;
+  background-position: center;
   font-family: Arial, sans-serif;
   gap: 4rem;
 `;
