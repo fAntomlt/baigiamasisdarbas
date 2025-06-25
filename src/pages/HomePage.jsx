@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import QuestionFeed from '../components/organisms/QuestionFeed';
 import UserSidebar from '../components/organisms/UserSidebar';
 import headerBg from '../assets/header-pattern.png';
+import NewQuestionForm from '../components/molecules/NewQuestionForm';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -63,6 +64,7 @@ const HomePage = () => {
 
       <Content>
         <MainSection>
+          <NewQuestionForm />
           <QuestionFeed />
         </MainSection>
 
