@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import LoginForm from '../components/organisms/LoginForm';
-import bookImage from '../assets/book.png';
-import topSectionBg from '../assets/topsectionpic.jpg';
 import wallpaper from '../assets/wallpaper.jpg'
 
 const Wrapper = styled.div`
@@ -19,7 +17,14 @@ const Header = styled.header`
   text-align: center;
   font-family: "Oswald", sans-serif;
   font-weight: bold;
-  font-size: 6rem;
+  font-size: 8rem;
+`;
+
+const Subtext = styled.p`
+  text-align: center;
+  font-size: 1.4rem;
+  color: rgb(0, 0, 0);
+  font-family: 'Poppins', sans-serif;
 `;
 
 const Content = styled.div`
@@ -27,14 +32,6 @@ const Content = styled.div`
   justify-content: center;
   align-items: center;
   gap: 15rem;
-`;
-
-const Subtext = styled.p`
-  text-align: center;
-  font-size: 1.2rem;
-  margin-top: -1rem;
-  color: rgb(4, 8, 10);
-  font-family: 'Poppins', sans-serif;
 `;
 
 const LeftSide = styled.div`
