@@ -56,13 +56,13 @@ const IconButton = styled.button`
   }
 `;
 
-const QuestionCard = ({ question, user, date, avatar }) => {
+const QuestionCard = ({ question, author, date, profilePic }) => {
   return (
     <Card>
-      <Avatar src={avatar} alt={`${user}'s avatar`} />
+      <Avatar src={profilePic || 'https://ui-avatars.com/api/?name=User'} alt={`${author}'s avatar`} />
       <Content>
         <Question>{question}</Question>
-        <Meta>Posted by {user} · {date}</Meta>
+        <Meta>Posted by {author} · {date}</Meta>
       </Content>
       <Actions>
         <IconButton><FaRegComment /></IconButton>
