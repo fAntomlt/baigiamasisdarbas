@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -136,10 +137,34 @@ const SettingsPage = () => {
   const [profilePic, setProfilePic] = useState(user?.profilePic || '');
   const [newPassword, setNewPassword] = useState('');
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    console.log('Saving changes:', {username, email, profilePic, newPassword});
-  };
+  const handleSave = async (e) => {
+  e.preventDefault();
+
+  try {
+    const token = localStorage.getItem('lifebook_token');
+
+    const response = await axios.put(
+      'http://localhost:5000/api/user/update',
+      {
+        username,
+        email,
+        profilePic,
+        newPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log('Updated:', response.data);
+    alert('Profilis atnaujintas sėkmingai!');
+  } catch (err) {
+    console.error('Klaida atnaujinant:', err);
+    alert('Nepavyko atnaujinti profilio.');
+  }
+};
 
   return (
     <PageWrapper>
