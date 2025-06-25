@@ -64,7 +64,7 @@ const ContentBox = styled.div`
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   padding: 3rem;
-  gap: 4rem;
+  gap: 7rem;
 `;
 
 const RegisterPage = () => {
@@ -73,7 +73,7 @@ const RegisterPage = () => {
         <ContentBox>
             <LeftColumn>
                 <Logo>LifeBook</Logo>
-                <Intro>LifeBook yra socialinis tinklas, kuris jungia žmones.</Intro>
+                <Intro>LifeBook yra vieta, kuri jungia žmones.</Intro>
                 <FeatureList>
                     <Feature>Bendrauk su draugais ir šeima</Feature>
                     <Feature>Dalinkis nuotraukomis ir mintimis</Feature>
