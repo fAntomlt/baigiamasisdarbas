@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import QuestionFeed from '../components/organisms/QuestionFeed';
 import UserSidebar from '../components/organisms/UserSidebar';
+import headerBg from '../assets/header-pattern.png';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -10,11 +11,32 @@ const PageWrapper = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   background-color: #1877f2;
   color: white;
   padding: 1rem 2rem;
-  font-size: 1.8rem;
+  font-size: 3rem;
   font-weight: bold;
+  overflow: hidden; /* Ensures background won't be clipped */
+    > * {
+    position: relative;
+    z-index: 1;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url(${headerBg});
+    background-repeat: repeat;
+    background-size: 16rem;
+    opacity: 0.15;
+    z-index: 0;
+    transform: rotate(6deg);
+    transform-origin: center;
+  }
 `;
 
 const Content = styled.div`
@@ -37,7 +59,7 @@ const SidebarSection = styled.aside`
 const HomePage = () => {
   return (
     <PageWrapper>
-      <Header>LifeBook</Header>
+      <Header><span>LifeBook</span></Header>
 
       <Content>
         <MainSection>
