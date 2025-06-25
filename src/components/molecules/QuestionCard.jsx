@@ -56,13 +56,22 @@ const IconButton = styled.button`
   }
 `;
 
-const QuestionCard = ({ question, author, date, profilePic }) => {
+const QuestionCard = ({ question, author, createdAt }) => {
   return (
     <Card>
-      <Avatar src={profilePic || 'https://ui-avatars.com/api/?name=User'} alt={`${author}'s avatar`} />
+      <Avatar
+        src={author?.profilePic || 'https://ui-avatars.com/api/?name=User'}
+        alt={`${author?.username}'s avatar`}
+      />
       <Content>
         <Question>{question}</Question>
-        <Meta>Posted by {author} · {date}</Meta>
+        <Meta>
+            Posted by {author?.username || 'Nežinomas'} · {createdAt ? new Date(createdAt).toLocaleDateString('lt-LT', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : 'Nežinoma data'}
+        </Meta>
       </Content>
       <Actions>
         <IconButton><FaRegComment /></IconButton>
