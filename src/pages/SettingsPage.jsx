@@ -131,40 +131,42 @@ const UserInfoBox = styled.div`
 `;
 
 const SettingsPage = () => {
-  const { user, dispatch } = useContext(AuthContext);
-  const [username, setUsername] = useState(user?.username || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [profilePic, setProfilePic] = useState(user?.profilePic || '');
-  const [newPassword, setNewPassword] = useState('');
+    const { user, dispatch } = useContext(AuthContext);
+    const [username, setUsername] = useState(user?.username || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [profilePic, setProfilePic] = useState(user?.profilePic || '');
+    const [newPassword, setNewPassword] = useState('');
 
-  const handleSave = async (e) => {
-  e.preventDefault();
+    const handleSave = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('lifebook_token');
+            const response = await axios.put(
+            'http://localhost:5000/api/user/update',
+            {
+                username,
+                email,
+                profilePic,
+                newPassword,
+            },
+            {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            }
+            );
 
-  try {
-    const token = localStorage.getItem('lifebook_token');
-
-    const response = await axios.put(
-      'http://localhost:5000/api/user/update',
-      {
-        username,
-        email,
-        profilePic,
-        newPassword,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log('Updated:', response.data);
-    alert('Profilis atnaujintas sėkmingai!');
-  } catch (err) {
-    console.error('Klaida atnaujinant:', err);
-    alert('Nepavyko atnaujinti profilio.');
-  }
-};
+            const updatedUser = response.data.user;
+            dispatch({
+                type: 'LOGIN',
+                payload: { user: updatedUser, token },
+            });
+            alert('Profilis atnaujintas sėkmingai!');
+        } catch (err) {
+            console.error('Klaida atnaujinant:', err);
+            alert('Nepavyko atnaujinti profilio.');
+        }
+    };
 
   return (
     <PageWrapper>
