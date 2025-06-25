@@ -14,7 +14,8 @@ const createQuestion = async (req, res) => {
     });
 
     const saved = await newQuestion.save();
-    res.status(201).json(saved);
+    const populated = await saved.populate('author', 'username profilePic');
+    res.status(201).json(populated);
   } catch (err) {
     res.status(500).json({ message: 'Nepavyko sukurti klausimo', error: err.message });
   }

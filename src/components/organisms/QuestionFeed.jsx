@@ -13,14 +13,12 @@ const QuestionFeed = ({ questions }) => {
   return (
     <Wrapper>
       <FilterBar />
-
       {questions.map((q) => (
         <QuestionCard
-          key={q._id}
-          question={q.question}
-          author={q.author?.username || 'Nežinomas'}
-          date={new Date(q.createdAt).toLocaleDateString()}
-          profilePic={q.author?.profilePic}
+            key={q._id}
+            question={q.question}
+            author={q.author}
+            createdAt={q.createdAt}
         />
       ))}
     </Wrapper>

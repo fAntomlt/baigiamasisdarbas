@@ -66,7 +66,11 @@ const QuestionCard = ({ question, author, createdAt }) => {
       <Content>
         <Question>{question}</Question>
         <Meta>
-          Posted by {author?.username || 'Nežinomas'} · {new Date(createdAt).toLocaleDateString()}
+            Posted by {author?.username || 'Nežinomas'} · {createdAt ? new Date(createdAt).toLocaleDateString('lt-LT', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : 'Nežinoma data'}
         </Meta>
       </Content>
       <Actions>
