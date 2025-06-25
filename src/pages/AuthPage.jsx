@@ -37,7 +37,7 @@ const Subtext = styled.p`
   text-align: center;
   font-size: 1.2rem;
   margin-top: -1rem;
-  color: #555;
+  color: rgb(17, 17, 17);
   font-family: 'Poppins', sans-serif;
 `;
 
