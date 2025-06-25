@@ -31,10 +31,19 @@ const Image = styled.img`
   object-fit: contain;
 `;
 
+const Subtext = styled.p`
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: -1rem;
+  color: #555;
+  font-family: 'Poppins', sans-serif; // or any other font you want
+`;
+
 const AuthPage = () => {
   return (
     <Wrapper>
       <Header>LifeBook</Header>
+      <Subtext>Tavo nauja vieta įdėjų išpildymui ir generavimui.</Subtext>
       <Content>
         <Image src={bookImage} alt="Book" />
         <LoginForm />
