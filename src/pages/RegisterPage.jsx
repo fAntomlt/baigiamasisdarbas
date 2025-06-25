@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import RegisterForm from '../components/organisms/RegisterForm';
 import registerWallpaper from '../assets/wallpaper2.jpg'
+import {Link} from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,6 +68,19 @@ const ContentBox = styled.div`
   gap: 7rem;
 `;
 
+const BottomLink = styled(Link)`
+  display: inline-block;
+  margin-top: 1.5rem;
+  text-align: center;
+  color: #1877f2;
+  font-weight: bold;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const RegisterPage = () => {
   return (
     <Wrapper>
@@ -84,6 +98,7 @@ const RegisterPage = () => {
             <RightColumn>
                 <Heading>Registracija</Heading>
                 <RegisterForm />
+                <BottomLink to="/">← Grįžti į prisijungimo puslapį</BottomLink>
             </RightColumn>
         </ContentBox>
     </Wrapper>
