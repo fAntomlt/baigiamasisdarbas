@@ -4,7 +4,7 @@ import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
-
+import { useNavigate } from 'react-router-dom';
 
 const Box = styled.div`
   width: 300px;
@@ -33,7 +33,9 @@ const Error = styled.p`
 `;
 
 const LoginForm = () => {
-  const {dispatch} = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -50,10 +52,20 @@ const LoginForm = () => {
         password,
       });
 
-      dispatch({ type: 'LOGIN', payload: res.data });
-      localStorage.setItem('user', JSON.stringify(res.data));
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user: {
+            _id: res.data._id,
+            username: res.data.username,
+            email: res.data.email,
+            profilePic: res.data.profilePic,
+          },
+          token: res.data.token,
+        },
+      });
 
-      window.location.href = '/';
+      navigate('/home');
     } catch (err) {
       setError(
         err.response?.data?.message || 'Kažkas nepavyko. Bandykite dar kartą.'
