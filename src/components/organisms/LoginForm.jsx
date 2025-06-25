@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Box = styled.div`
   width: 300px;
   padding: 2rem;
-  background-color: #f3f3f3;
+  background-color:rgba(224, 244, 255, 0.77);
   border-radius: 10px;
 `;
 
@@ -24,7 +24,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   padding: 0.5rem;
-  background-color: #333;
+  background-color: rgba(0, 0, 0, 0.77);
   color: white;
   border: none;
   border-radius: 5px;
@@ -40,9 +40,9 @@ const RegisterText = styled.p`
 const LoginForm = () => {
   return (
     <Box>
-      <Title>Login</Title>
-      <Input type="text" placeholder="Username" />
-      <Input type="password" placeholder="Password" />
+      <Title>Prisijungti</Title>
+      <Input type="text" placeholder="Slapyvardis" />
+      <Input type="password" placeholder="Slaptažodis" />
       <Button>Prisijungti</Button>
       <RegisterText>Jei neesate prisiregistravę – spauskite čia</RegisterText>
     </Box>
