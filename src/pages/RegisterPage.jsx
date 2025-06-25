@@ -58,24 +58,34 @@ const Heading = styled.h2`
   margin-bottom: 1rem;
 `;
 
+const ContentBox = styled.div`
+  display: flex;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 3rem;
+  gap: 4rem;
+`;
+
 const RegisterPage = () => {
   return (
     <Wrapper>
-      <LeftColumn>
-        <Logo>LifeBook</Logo>
-        <Intro>LifeBook yra socialinis tinklas, kuris jungia žmones.</Intro>
-        <FeatureList>
-          <Feature>Bendrauk su draugais ir šeima</Feature>
-          <Feature>Dalinkis nuotraukomis ir mintimis</Feature>
-          <Feature>Rask bendraminčių ir diskutuok</Feature>
-          <Feature>Tvarkyk savo klausimus ir atsakymus</Feature>
-        </FeatureList>
-      </LeftColumn>
-
-      <RightColumn>
-        <Heading>Registracija</Heading>
-        <RegisterForm />
-      </RightColumn>
+        <ContentBox>
+            <LeftColumn>
+                <Logo>LifeBook</Logo>
+                <Intro>LifeBook yra socialinis tinklas, kuris jungia žmones.</Intro>
+                <FeatureList>
+                    <Feature>Bendrauk su draugais ir šeima</Feature>
+                    <Feature>Dalinkis nuotraukomis ir mintimis</Feature>
+                    <Feature>Rask bendraminčių ir diskutuok</Feature>
+                    <Feature>Tvarkyk savo klausimus ir atsakymus</Feature>
+                </FeatureList>
+            </LeftColumn>
+            <RightColumn>
+                <Heading>Registracija</Heading>
+                <RegisterForm />
+            </RightColumn>
+        </ContentBox>
     </Wrapper>
   );
 };
