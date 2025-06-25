@@ -40,9 +40,9 @@ const RegisterText = styled.p`
 const LoginForm = () => {
   return (
     <Box>
-      <Title>Login</Title>
-      <Input type="text" placeholder="Username" />
-      <Input type="password" placeholder="Password" />
+      <Title>Prisijungti</Title>
+      <Input type="text" placeholder="Slapyvardis" />
+      <Input type="password" placeholder="Slaptažodis" />
       <Button>Prisijungti</Button>
       <RegisterText>Jei neesate prisiregistravę – spauskite čia</RegisterText>
     </Box>
