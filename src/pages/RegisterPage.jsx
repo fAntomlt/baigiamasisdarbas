@@ -20,7 +20,7 @@ const LeftColumn = styled.div`
 
 const Logo = styled.h1`
   font-size: 3rem;
-  color: #1877f2;
+  color:rgb(0, 0, 0);
   margin-bottom: 1rem;
 `;
 
