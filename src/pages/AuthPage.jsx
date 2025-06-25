@@ -37,14 +37,23 @@ const Subtext = styled.p`
   font-size: 1.2rem;
   margin-top: -1rem;
   color: #555;
-  font-family: 'Poppins', sans-serif; // or any other font you want
+  font-family: 'Poppins', sans-serif;
 `;
+
+const Divider = styled.div`
+  height: 2px;
+  width: 100%;
+  background-color: white;
+  margin: 5rem 0 auto;
+  opacity: 50%;
+`
 
 const AuthPage = () => {
   return (
     <Wrapper>
       <Header>LifeBook</Header>
       <Subtext>Tavo nauja vieta įdėjų išpildymui ir generavimui.</Subtext>
+      <Divider></Divider>
       <Content>
         <Image src={bookImage} alt="Book" />
         <LoginForm />
