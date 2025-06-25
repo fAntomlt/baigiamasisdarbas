@@ -32,3 +32,30 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: 'Uzsiregistruoti nepavyko, del:', error: err.message });
   }
 };
+
+const loginUser = async (req, res) => {
+  const {email, password} = req.body;
+
+  try {
+    const user = await User.findOne({email});
+    if (!user) return res.status(400).json({message: 'El pastas arba slaptazodis yra neteisingas'});
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) return res.status(400).json({message: 'El pastas arba slaptazodis yra neteisingas'});
+
+    res.json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      profilePic: user.profilePic,
+      token: generateToken(user._id),
+    });
+  } catch (err) {
+    res.status(500).json({message: 'Prisijungti nepavyko, del:', error: err.message});
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+};
