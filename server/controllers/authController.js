@@ -29,7 +29,8 @@ const registerUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (err) {
-    res.status(500).json({ message: 'Uzsiregistruoti nepavyko, del:', error: err.message });
+    console.error('Registration error:', err);
+    res.status(500).json({ message: `Uzsiregistruoti nepavyko, del: ${err.message}` });
   }
 };
 
@@ -51,8 +52,8 @@ const loginUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (err) {
-    res.status(500).json({message: 'Prisijungti nepavyko, del:', error: err.message});
-  }
+  res.status(500).json({ message: `Uzsiregistruoti nepavyko, del: ${err.message}` });
+}
 };
 
 module.exports = {

@@ -2,8 +2,17 @@ import React, { createContext, useReducer } from 'react';
 
 const AuthContext = createContext();
 
+const getUserFromStorage = () => {
+  try {
+    const stored = localStorage.getItem('lifebook_user');
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+};
+
 const initialState = {
-  user: JSON.parse(localStorage.getItem('lifebook_user')) || null,
+  user: getUserFromStorage(),
   token: localStorage.getItem('lifebook_token') || null,
 };
 
