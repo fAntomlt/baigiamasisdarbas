@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import LoginForm from '../components/organisms/LoginForm';
 import bookImage from '../assets/book.png';
+import topSectionBg from '../assets/topsectionpic.jpg';
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,12 +49,21 @@ const Divider = styled.div`
   opacity: 50%;
 `
 
+const TopSection = styled.div`
+  background-image: url(${topSectionBg});
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+`;
+
 const AuthPage = () => {
   return (
     <Wrapper>
-      <Header>LifeBook</Header>
-      <Subtext>Tavo nauja vieta įdėjų išpildymui ir generavimui.</Subtext>
+      <TopSection>
+        <Header>LifeBook</Header>
+        <Subtext>Tavo nauja vieta įdėjų išpildymui ir generavimui.</Subtext>
       <Divider></Divider>
+      </TopSection>
       <Content>
         <Image src={bookImage} alt="Book" />
         <LoginForm />
