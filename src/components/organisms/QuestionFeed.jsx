@@ -21,6 +21,8 @@ const QuestionFeed = ({ questions, onUpdate, onDelete }) => {
           author={q.author}
           createdAt={q.createdAt}
           updatedAt={q.updatedAt}
+          likes={q.likes}
+          dislikes={q.dislikes}
           onUpdate={onUpdate}
           onDelete={onDelete}
         />

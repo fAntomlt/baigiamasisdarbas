@@ -92,10 +92,34 @@ const toggleLike = async (req, res) => {
   }
 };
 
+const toggleDislike = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id);
+    if (!question) return res.status(404).json({ message: 'Klausimas nerastas' });
+
+    const userId = req.user._id.toString();
+
+    question.likes = question.likes.filter(id => id.toString() !== userId);
+
+    if (question.dislikes.includes(userId)) {
+      question.dislikes = question.dislikes.filter(id => id.toString() !== userId);
+    } else {
+      question.dislikes.push(userId);
+    }
+
+    await question.save();
+    const populated = await question.populate('author', 'username profilePic');
+    res.status(200).json(populated);
+  } catch (err) {
+    res.status(500).json({ message: 'Nepavyko pažymėti nepatiktuko', error: err.message });
+  }
+};
+
 module.exports = {
   createQuestion,
   getAllQuestions,
   updateQuestion,
   deleteQuestion,
   toggleLike,
+  toggleDislike,
 };
