@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
+import axios from 'axios';
 
 const RegisterForm = () => {
   const [username, setUsername] = useState('');
-  const [email, setEmail]     = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [profilePic, setProfilePic] = useState('');
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-  };
+  const handleRegister = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post('http://localhost:5000/api/auth/register', {
+      username,
+      email,
+      password,
+      profilePic,
+    });
+    console.log('Registracija sėkminga:', res.data);
+  } catch (err) {
+    console.error('Klaida registruojantis, del:', err.response?.data?.message || err.message);
+  }
+};
 
   return (
     <form onSubmit={handleRegister}>
