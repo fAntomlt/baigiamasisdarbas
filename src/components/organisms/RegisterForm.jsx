@@ -9,8 +9,12 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [profilePic, setProfilePic] = useState('');
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const handleRegister = async (e) => {
   e.preventDefault();
+  setLoading(true);
   try {
     const res = await axios.post('http://localhost:5000/api/auth/register', {
       username,
@@ -18,9 +22,17 @@ const RegisterForm = () => {
       password,
       profilePic,
     });
+
     console.log('Registracija sėkminga:', res.data);
+    setSuccess(true);
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 10000);
+
   } catch (err) {
-    console.error('Klaida registruojantis, del:', err.response?.data?.message || err.message);
+    console.error('Klaida registruojantis:', err.response?.data?.message || err.message);
+  } finally {
+    setLoading(false);
   }
 };
 
