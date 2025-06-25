@@ -86,6 +86,16 @@ const HomePage = () => {
     setQuestions((prev) => [newQuestion, ...prev]);
   };
 
+  const handleQuestionUpdated = (updatedQuestion) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q._id === updatedQuestion._id ? updatedQuestion : q))
+    );
+  };
+
+  const handleQuestionDeleted = (id) => {
+    setQuestions((prev) => prev.filter((q) => q._id !== id));
+  };
+
   return (
     <PageWrapper>
       <Header><span>LifeBook</span></Header>
@@ -93,7 +103,11 @@ const HomePage = () => {
       <Content>
         <MainSection>
           <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
-          <QuestionFeed questions={questions} />
+          <QuestionFeed
+            questions={questions}
+            onUpdate={handleQuestionUpdated}
+            onDelete={handleQuestionDeleted}
+          />
         </MainSection>
 
         <SidebarSection>

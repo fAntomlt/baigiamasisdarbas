@@ -9,16 +9,19 @@ const Wrapper = styled.div`
   gap: 1.5rem;
 `;
 
-const QuestionFeed = ({ questions }) => {
+const QuestionFeed = ({ questions, onUpdate, onDelete }) => {
   return (
     <Wrapper>
       <FilterBar />
       {questions.map((q) => (
         <QuestionCard
-            key={q._id}
-            question={q.question}
-            author={q.author}
-            createdAt={q.createdAt}
+          key={q._id}
+          _id={q._id}
+          question={q.question}
+          author={q.author}
+          createdAt={q.createdAt}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       ))}
     </Wrapper>
