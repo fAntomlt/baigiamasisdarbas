@@ -83,7 +83,7 @@ const SaveButton = styled.button`
   }
 `;
 
-const QuestionCard = ({ question, author, createdAt, _id, onUpdate, onDelete }) => {
+const QuestionCard = ({ question, author, createdAt, updatedAt, _id, onUpdate, onDelete }) => {
   const { user, token } = useContext(AuthContext);
   const isAuthor = user?._id === author?._id;
 
@@ -146,6 +146,9 @@ const QuestionCard = ({ question, author, createdAt, _id, onUpdate, onDelete }) 
                     day: 'numeric',
                   })
                 : 'Nežinoma data'}
+              {updatedAt && updatedAt !== createdAt && (
+                <span title={`Atnaujinta: ${new Date(updatedAt).toLocaleString('lt-LT')}`}> · redaguota</span>
+              )}
             </Meta>
           </>
         )}

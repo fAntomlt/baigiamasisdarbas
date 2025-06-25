@@ -20,6 +20,7 @@ const QuestionFeed = ({ questions, onUpdate, onDelete }) => {
           question={q.question}
           author={q.author}
           createdAt={q.createdAt}
+          updatedAt={q.updatedAt}
           onUpdate={onUpdate}
           onDelete={onDelete}
         />
