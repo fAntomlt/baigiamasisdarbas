@@ -23,11 +23,24 @@ const createQuestion = async (req, res) => {
 
 const getAllQuestions = async (req, res) => {
   try {
-    const questions = await Question.find({}, '-__v')
-  .populate('author', 'username profilePic')
-  .sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 3;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(questions);
+    const questions = await Question.find({}, '-__v')
+      .populate('author', 'username profilePic')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Question.countDocuments();
+
+    res.status(200).json({
+      questions,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalQuestions: total,
+    });
   } catch (err) {
     res.status(500).json({ message: 'Nepavyko gauti klausimų', error: err.message });
   }

@@ -78,7 +78,7 @@ const HomePage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setQuestions(res.data);
+        setQuestions(res.data.questions);
       } catch (err) {
         console.error('Klaida gaunant klausimus:', err);
       }
