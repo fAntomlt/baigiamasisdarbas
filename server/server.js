@@ -24,6 +24,9 @@ app.use('/api/user', userRoutes);
 const questionRoutes = require('./routes/questionRoutes');
 app.use('/api/questions', questionRoutes);
 
+const answerRoutes = require('./routes/answerRoutes');
+app.use('/api/answers', answerRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Serveris paleistas ant ${PORT} porto`);
