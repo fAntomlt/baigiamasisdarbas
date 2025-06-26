@@ -23,13 +23,14 @@ const Name = styled.h3`
   margin: 0 0 1rem 0;
 `;
 
-const SettingsButton = styled.button`
+const Button = styled.button`
   padding: 0.5rem 1.2rem;
   background-color: #0077cc;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  margin-top: 0.5rem;
 
   &:hover {
     background-color: #005fa3;
@@ -37,11 +38,16 @@ const SettingsButton = styled.button`
 `;
 
 const UserSidebar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSettingsClick = () => {
     navigate('/settings');
+  };
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    navigate('/');
   };
 
   return (
@@ -51,7 +57,9 @@ const UserSidebar = () => {
         alt="profile"
       />
       <Name>{user?.username || 'Vartotojas'}</Name>
-      <SettingsButton onClick={handleSettingsClick}>Nustatymai</SettingsButton>
+
+      <Button onClick={handleSettingsClick}>Nustatymai</Button>
+      <Button onClick={handleLogout}>Atsijungti</Button>
     </Sidebar>
   );
 };
