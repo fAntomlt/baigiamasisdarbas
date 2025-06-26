@@ -8,6 +8,7 @@ const Bar = styled.div`
   gap: 1rem;
   margin-bottom: 1.5rem;
   position: relative;
+  flex-wrap: wrap;
 `;
 
 const FilterButton = styled.button`
@@ -28,37 +29,25 @@ const FilterButton = styled.button`
   }
 `;
 
-const Dropdown = styled.div`
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background-color: white;
+const NameInput = styled.input`
+  padding: 0.4rem 0.6rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  z-index: 5;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  min-width: 120px;
-`;
-
-const DropdownItem = styled.button`
-  background: none;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  text-align: left;
-  cursor: pointer;
   font-size: 0.9rem;
-  transition: background 0.2s;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
+  margin-left: 0.5rem;
 `;
 
-const FilterBar = ({ sortField, sortOrder, setSortField, setSortOrder }) => {
-  const [showExtra, setShowExtra] = useState(false);
+const FilterBar = ({
+  sortField,
+  sortOrder,
+  setSortField,
+  setSortOrder,
+  filterType,
+  setFilterType,
+  nameSearch,
+  setNameSearch,
+}) => {
+  const [showNameInput, setShowNameInput] = useState(false);
 
   const toggleSort = (field) => {
     if (sortField === field) {
@@ -70,43 +59,56 @@ const FilterBar = ({ sortField, sortOrder, setSortField, setSortOrder }) => {
   };
 
   return (
-  <Bar>
-    <FilterButton
-      onClick={() => toggleSort('comments')}
-      active={sortField === 'comments'}
-    >
-      Most Answered
-      {sortField === 'comments' &&
-        (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
-    </FilterButton>
-
-    <FilterButton
-      onClick={() => toggleSort('recent')}
-      active={sortField === 'recent'}
-    >
-      Recent
-      {sortField === 'recent' &&
-        (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
-    </FilterButton>
-
-    <FilterButton>Answered</FilterButton>
-    <FilterButton>Unanswered</FilterButton>
-
-    <div style={{ position: 'relative' }}>
-      <FilterButton onClick={() => setShowExtra(prev => !prev)}>
-        Extra ⬇️
+    <Bar>
+      <FilterButton
+        onClick={() => toggleSort('comments')}
+        active={sortField === 'comments'}
+      >
+        Most Answered
+        {sortField === 'comments' &&
+          (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
       </FilterButton>
 
-      {showExtra && (
-        <Dropdown>
-          <DropdownItem>By name</DropdownItem>
-          <DropdownItem>By tags</DropdownItem>
-        </Dropdown>
-      )}
-    </div>
-  </Bar>
-);
+      <FilterButton
+        onClick={() => toggleSort('recent')}
+        active={sortField === 'recent'}
+      >
+        Recent
+        {sortField === 'recent' &&
+          (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+      </FilterButton>
 
+      <FilterButton
+        onClick={() => setFilterType(filterType === 'answered' ? null : 'answered')}
+        active={filterType === 'answered'}
+      >
+        Answered
+      </FilterButton>
+
+      <FilterButton
+        onClick={() => setFilterType(filterType === 'unanswered' ? null : 'unanswered')}
+        active={filterType === 'unanswered'}
+      >
+        Unanswered
+      </FilterButton>
+
+      <FilterButton
+        onClick={() => setShowNameInput(prev => !prev)}
+        active={showNameInput}
+      >
+        By Name
+      </FilterButton>
+
+      {showNameInput && (
+        <NameInput
+          type="text"
+          placeholder="Search question..."
+          value={nameSearch}
+          onChange={(e) => setNameSearch(e.target.value)}
+        />
+      )}
+    </Bar>
+  );
 };
 
 export default FilterBar;
