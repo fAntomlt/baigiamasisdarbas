@@ -129,6 +129,7 @@ const UserInfoBox = styled.div`
   text-align: center;
 `;
 
+// Form states initialized with current user values
 const SettingsPage = () => {
     const { user, dispatch } = useContext(AuthContext);
     const [username, setUsername] = useState(user?.username || '');
@@ -136,10 +137,13 @@ const SettingsPage = () => {
     const [profilePic, setProfilePic] = useState(user?.profilePic || '');
     const [newPassword, setNewPassword] = useState('');
 
+    // Handle form submission
     const handleSave = async (e) => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('lifebook_token');
+
+            // Send update request to backend
             const response = await axios.put(
             'http://localhost:5000/api/user/update',
             {
@@ -156,6 +160,8 @@ const SettingsPage = () => {
             );
 
             const updatedUser = response.data.user;
+
+            // Update context and localStorage
             dispatch({
                 type: 'LOGIN',
                 payload: { user: updatedUser, token },

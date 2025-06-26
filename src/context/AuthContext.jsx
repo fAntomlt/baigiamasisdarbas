@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 
 const AuthContext = createContext();
 
+// Get user object from localStorage
 const getUserFromStorage = () => {
   try {
     const stored = localStorage.getItem('lifebook_user');
@@ -16,13 +17,16 @@ const initialState = {
   token: localStorage.getItem('lifebook_token') || null,
 };
 
+// Reducer to handle auth state changes
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
+      // Save user and token to localStorage
         localStorage.setItem('lifebook_user', JSON.stringify(action.payload.user));
         localStorage.setItem('lifebook_token', action.payload.token);
         return { user: action.payload.user, token: action.payload.token };
     case 'LOGOUT':
+      // Clear user and token from localStorage
         localStorage.removeItem('lifebook_user');
         localStorage.removeItem('lifebook_token');
         return {user: null, token: null};
@@ -31,6 +35,7 @@ const authReducer = (state, action) => {
   }
 };
 
+// AuthProvider: Wraps app and provides auth context
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   return (
@@ -40,4 +45,5 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+// Export context and provider
 export {AuthContext, AuthProvider};
