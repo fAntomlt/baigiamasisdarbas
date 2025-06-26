@@ -46,8 +46,11 @@ const updateAnswer = async (req, res) => {
     const answer = await Answer.findById(req.params.answerId);
 
     if (!answer) return res.status(404).json({ message: 'Atsakymas nerastas' });
-    if (String(answer.author) !== req.user._id)
+
+    // Fix: Compare both IDs as strings
+    if (String(answer.author) !== String(req.user._id)) {
       return res.status(403).json({ message: 'Neturite teisės redaguoti' });
+    }
 
     answer.content = req.body.content || answer.content;
     answer.updatedAt = new Date();
@@ -65,8 +68,11 @@ const deleteAnswer = async (req, res) => {
     const answer = await Answer.findById(req.params.answerId);
 
     if (!answer) return res.status(404).json({ message: 'Atsakymas nerastas' });
-    if (String(answer.author) !== req.user._id)
+
+    // Fix: Compare both IDs as strings
+    if (String(answer.author) !== String(req.user._id)) {
       return res.status(403).json({ message: 'Neturite teisės ištrinti' });
+    }
 
     await answer.deleteOne();
     res.status(200).json({ message: 'Atsakymas ištrintas' });

@@ -58,7 +58,7 @@ const AnswerWrapper = styled.div`
   align-items: flex-start;
   gap: 1rem;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 1rem;
   background: white;
 `;
@@ -75,12 +75,30 @@ const AnswerContent = styled.div`
 `;
 
 const AnswerText = styled.p`
-  font-size: 1.4rem;
-  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  margin: 0 0 0.6rem 0;
 `;
 
 const AnswerMeta = styled.small`
   color: #666;
+`;
+
+const ActionBar = styled.div`
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const ActionButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: #1877f2;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const QuestionDetailPage = () => {
@@ -89,6 +107,8 @@ const QuestionDetailPage = () => {
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [newAnswer, setNewAnswer] = useState('');
+  const [editingAnswerId, setEditingAnswerId] = useState(null);
+  const [editingContent, setEditingContent] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,6 +150,40 @@ const QuestionDetailPage = () => {
     }
   };
 
+  const handleEdit = (answerId, currentContent) => {
+    setEditingAnswerId(answerId);
+    setEditingContent(currentContent);
+  };
+
+  const handleEditSubmit = async (answerId) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/answers/${answerId}`,
+        { content: editingContent },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setAnswers((prev) =>
+        prev.map((a) => (a._id === answerId ? res.data : a))
+      );
+      setEditingAnswerId(null);
+      setEditingContent('');
+    } catch (err) {
+      alert('Klaida redaguojant atsakymą');
+    }
+  };
+
+  const handleDelete = async (answerId) => {
+    if (!window.confirm('Ar tikrai norite ištrinti šį atsakymą?')) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/answers/${answerId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAnswers((prev) => prev.filter((a) => a._id !== answerId));
+    } catch (err) {
+      alert('Nepavyko ištrinti atsakymo');
+    }
+  };
+
   if (!question) return <Wrapper>Loading...</Wrapper>;
 
   return (
@@ -153,17 +207,53 @@ const QuestionDetailPage = () => {
         <p>Nėra atsakymų.</p>
       ) : (
         <AnswerList>
-          {answers.map((a) => (
-            <AnswerWrapper key={a._id}>
-              <AnswerAvatar src={a.author?.profilePic || 'https://ui-avatars.com/api/?name=User'} />
-              <AnswerContent>
-                <AnswerText>{a.content}</AnswerText>
-                <AnswerMeta>
-                  by {a.author?.username || 'Nežinomas'}
-                </AnswerMeta>
-              </AnswerContent>
-            </AnswerWrapper>
-          ))}
+          {answers.map((a) => {
+            const isAuthor = user?._id === a.author?._id;
+            const isEditing = editingAnswerId === a._id;
+
+            return (
+              <AnswerWrapper key={a._id}>
+                <AnswerAvatar
+                  src={a.author?.profilePic || 'https://ui-avatars.com/api/?name=User'}
+                />
+                <AnswerContent>
+                  {isEditing ? (
+                    <>
+                      <TextArea
+                        rows="3"
+                        value={editingContent}
+                        onChange={(e) => setEditingContent(e.target.value)}
+                      />
+                      <SubmitButton
+                        type="button"
+                        onClick={() => handleEditSubmit(a._id)}
+                      >
+                        Išsaugoti
+                      </SubmitButton>
+                    </>
+                  ) : (
+                    <>
+                      <AnswerText>{a.content}</AnswerText>
+                      <AnswerMeta>
+                        by {a.author?.username || 'Nežinomas'}
+                        {a.updatedAt && a.updatedAt !== a.createdAt && ' · redaguota'}
+                      </AnswerMeta>
+                      {isAuthor && (
+                        <ActionBar>
+                          <ActionButton onClick={() => handleEdit(a._id, a.content)}>
+                            Redaguoti
+                          </ActionButton>
+                          <ActionButton onClick={() => handleDelete(a._id)}>
+                            Ištrinti
+                          </ActionButton>
+                        </ActionBar>
+                      )}
+                    </>
+                  )}
+                </AnswerContent>
+              </AnswerWrapper>
+            );
+          })}
         </AnswerList>
       )}
     </Wrapper>
