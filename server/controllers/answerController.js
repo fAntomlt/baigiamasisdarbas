@@ -47,7 +47,6 @@ const updateAnswer = async (req, res) => {
 
     if (!answer) return res.status(404).json({ message: 'Atsakymas nerastas' });
 
-    // Fix: Compare both IDs as strings
     if (String(answer.author) !== String(req.user._id)) {
       return res.status(403).json({ message: 'Neturite teisės redaguoti' });
     }
@@ -69,7 +68,6 @@ const deleteAnswer = async (req, res) => {
 
     if (!answer) return res.status(404).json({ message: 'Atsakymas nerastas' });
 
-    // Fix: Compare both IDs as strings
     if (String(answer.author) !== String(req.user._id)) {
       return res.status(403).json({ message: 'Neturite teisės ištrinti' });
     }

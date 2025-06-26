@@ -29,7 +29,6 @@ const TopSection = styled.div`
   width: 100%;
 `;
 
-
 const BackButton = styled.button`
   margin-top: auto;
   padding: 0.5rem 1.2rem;
