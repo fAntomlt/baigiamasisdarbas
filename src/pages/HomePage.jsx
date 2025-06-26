@@ -6,6 +6,7 @@ import QuestionFeed from '../components/organisms/QuestionFeed';
 import UserSidebar from '../components/organisms/UserSidebar';
 import headerBg from '../assets/header-pattern.png';
 import NewQuestionForm from '../components/molecules/NewQuestionForm';
+import FilterBar from '../components/molecules/FilterBar';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -64,24 +65,25 @@ const SidebarSection = styled.aside`
 const HomePage = () => {
   const { token } = useContext(AuthContext);
   const [questions, setQuestions] = useState([]);
+  const [sortField, setSortField] = useState('recent');
+  const [sortOrder, setSortOrder] = useState('desc');
 
   useEffect(() => {
-  const fetchQuestions = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/questions', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('🔍 Received questions:', res.data);
-      setQuestions(res.data);
-    } catch (err) {
-      console.error('Klaida gaunant klausimus:', err);
-    }
-  };
+    const fetchQuestions = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/questions', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setQuestions(res.data);
+      } catch (err) {
+        console.error('Klaida gaunant klausimus:', err);
+      }
+    };
 
-  fetchQuestions();
-}, [token]);
+    fetchQuestions();
+  }, [token]);
 
   const handleQuestionCreated = (newQuestion) => {
     setQuestions((prev) => [newQuestion, ...prev]);
@@ -97,26 +99,46 @@ const HomePage = () => {
     setQuestions((prev) => prev.filter((q) => q._id !== id));
   };
 
+  // 🧠 Sorting logic
+  const sortedQuestions = [...questions].sort((a, b) => {
+    if (sortField === 'comments') {
+      return sortOrder === 'asc' ? a.comments - b.comments : b.comments - a.comments;
+    } else if (sortField === 'recent') {
+      const aTime = new Date(a.createdAt).getTime();
+      const bTime = new Date(b.createdAt).getTime();
+      return sortOrder === 'asc' ? aTime - bTime : bTime - aTime;
+    }
+    return 0;
+  });
+
   return (
-    <PageWrapper>
-      <Header><span>LifeBook</span></Header>
+  <PageWrapper>
+    <Header><span>LifeBook</span></Header>
 
-      <Content>
-        <MainSection>
-          <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
-          <QuestionFeed
-            questions={questions}
-            onUpdate={handleQuestionUpdated}
-            onDelete={handleQuestionDeleted}
-          />
-        </MainSection>
+    <Content>
+      <MainSection>
+        <FilterBar
+          sortField={sortField}
+          sortOrder={sortOrder}
+          setSortField={setSortField}
+          setSortOrder={setSortOrder}
+        />
 
-        <SidebarSection>
-          <UserSidebar />
-        </SidebarSection>
-      </Content>
-    </PageWrapper>
-  );
+        <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
+
+        <QuestionFeed
+          questions={sortedQuestions}
+          onUpdate={handleQuestionUpdated}
+          onDelete={handleQuestionDeleted}
+        />
+      </MainSection>
+
+      <SidebarSection>
+        <UserSidebar />
+      </SidebarSection>
+    </Content>
+  </PageWrapper>
+);
 };
 
 export default HomePage;
