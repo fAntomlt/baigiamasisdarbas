@@ -126,27 +126,26 @@ const QuestionDetailPage = () => {
   const [editingContent, setEditingContent] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [questionRes, answersRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/questions`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`http://localhost:5000/api/answers/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+  const fetchData = async () => {
+    try {
+      const [questionRes, answersRes] = await Promise.all([
+        axios.get(`http://localhost:5000/api/questions/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get(`http://localhost:5000/api/answers/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
 
-        const q = questionRes.data.find((q) => q._id === id);
-        setQuestion(q);
-        setAnswers(answersRes.data);
-      } catch (err) {
-        console.error('Klaida kraunant duomenis:', err);
-      }
-    };
+      setQuestion(questionRes.data);
+      setAnswers(answersRes.data);
+    } catch (err) {
+      console.error('Klaida kraunant duomenis:', err);
+    }
+  };
 
-    fetchData();
-  }, [id, token]);
+  fetchData();
+}, [id, token]);
 
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();

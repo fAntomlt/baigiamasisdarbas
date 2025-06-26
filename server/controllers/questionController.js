@@ -23,11 +23,24 @@ const createQuestion = async (req, res) => {
 
 const getAllQuestions = async (req, res) => {
   try {
-    const questions = await Question.find({}, '-__v')
-  .populate('author', 'username profilePic')
-  .sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 3;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(questions);
+    const questions = await Question.find({}, '-__v')
+      .populate('author', 'username profilePic')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Question.countDocuments();
+
+    res.status(200).json({
+      questions,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalQuestions: total,
+    });
   } catch (err) {
     res.status(500).json({ message: 'Nepavyko gauti klausimų', error: err.message });
   }
@@ -115,9 +128,25 @@ const toggleDislike = async (req, res) => {
   }
 };
 
+const getQuestionById = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id)
+      .populate('author', 'username profilePic');
+
+    if (!question) {
+      return res.status(404).json({ message: 'Klausimas nerastas' });
+    }
+
+    res.status(200).json(question);
+  } catch (err) {
+    res.status(500).json({ message: 'Klaida gaunant klausimą', error: err.message });
+  }
+};
+
 module.exports = {
   createQuestion,
   getAllQuestions,
+  getQuestionById,
   updateQuestion,
   deleteQuestion,
   toggleLike,
