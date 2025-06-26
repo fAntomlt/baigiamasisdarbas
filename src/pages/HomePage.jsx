@@ -82,14 +82,16 @@ const HomePage = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/questions?page=${currentPage}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const res = await axios.get('http://localhost:5000/api/questions', {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            page: currentPage,
+            sort: sortField,
+            order: sortOrder,
+            filter: filterType,
+            name: nameSearch
           }
-        );
+      });
         setQuestions(res.data.questions);
         setTotalPages(res.data.totalPages);
       } catch (err) {
