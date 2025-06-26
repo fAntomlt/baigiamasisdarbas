@@ -66,21 +66,22 @@ const HomePage = () => {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/api/questions', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setQuestions(res.data);
-      } catch (err) {
-        console.error('Klaida gaunant klausimus:', err);
-      }
-    };
+  const fetchQuestions = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/questions', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('🔍 Received questions:', res.data);
+      setQuestions(res.data);
+    } catch (err) {
+      console.error('Klaida gaunant klausimus:', err);
+    }
+  };
 
-    fetchQuestions();
-  }, [token]);
+  fetchQuestions();
+}, [token]);
 
   const handleQuestionCreated = (newQuestion) => {
     setQuestions((prev) => [newQuestion, ...prev]);
