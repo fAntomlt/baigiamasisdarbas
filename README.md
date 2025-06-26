@@ -17,7 +17,7 @@ cd baigiamasisdarbas
 npm install
 cd server
 npm install
-npm run dev
+node server.js
 ```
 Runs the Express API on http://localhost:5000
 
