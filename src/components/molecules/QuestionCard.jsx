@@ -58,6 +58,11 @@ const IconButton = styled.button`
   }
 `;
 
+const Count = styled.span`
+  font-size: 0.8rem;
+  margin-left: 6px;
+`;
+
 const EditInput = styled.textarea`
   width: 100%;
   padding: 0.5rem;
@@ -83,12 +88,24 @@ const SaveButton = styled.button`
   }
 `;
 
-const QuestionCard = ({ question, author, createdAt, updatedAt, _id, onUpdate, onDelete }) => {
+const QuestionCard = ({
+  question,
+  author,
+  createdAt,
+  updatedAt,
+  likes = [],
+  dislikes = [],
+  _id,
+  onUpdate,
+  onDelete,
+}) => {
   const { user, token } = useContext(AuthContext);
   const isAuthor = user?._id === author?._id;
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(question);
+  const [localLikes, setLocalLikes] = useState(likes.length);
+  const [localDislikes, setLocalDislikes] = useState(dislikes.length);
 
   const handleUpdate = async () => {
     try {
@@ -100,7 +117,6 @@ const QuestionCard = ({ question, author, createdAt, updatedAt, _id, onUpdate, o
       onUpdate?.(res.data);
       setIsEditing(false);
     } catch (err) {
-      console.error('Klaida atnaujinant klausimą:', err);
       alert('Nepavyko atnaujinti klausimo.');
     }
   };
@@ -114,24 +130,47 @@ const QuestionCard = ({ question, author, createdAt, updatedAt, _id, onUpdate, o
       });
       onDelete?.(_id);
     } catch (err) {
-      console.error('Klaida tryniant klausimą:', err);
       alert('Nepavyko ištrinti klausimo.');
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/questions/${_id}/like`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setLocalLikes(res.data.likes.length);
+      setLocalDislikes(res.data.dislikes.length);
+      onUpdate?.(res.data);
+    } catch (err) {
+      console.error('Like klaida:', err);
+    }
+  };
+
+  const handleDislike = async () => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/questions/${_id}/dislike`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setLocalLikes(res.data.likes.length);
+      setLocalDislikes(res.data.dislikes.length);
+      onUpdate?.(res.data);
+    } catch (err) {
+      console.error('Dislike klaida:', err);
     }
   };
 
   return (
     <Card>
-      <Avatar
-        src={author?.profilePic || 'https://ui-avatars.com/api/?name=User'}
-        alt={`${author?.username}'s avatar`}
-      />
+      <Avatar src={author?.profilePic || 'https://ui-avatars.com/api/?name=User'} />
       <Content>
         {isEditing ? (
           <>
-            <EditInput
-              value={editedText}
-              onChange={(e) => setEditedText(e.target.value)}
-            />
+            <EditInput value={editedText} onChange={(e) => setEditedText(e.target.value)} />
             <SaveButton onClick={handleUpdate}>Išsaugoti</SaveButton>
           </>
         ) : (
@@ -139,13 +178,11 @@ const QuestionCard = ({ question, author, createdAt, updatedAt, _id, onUpdate, o
             <QuestionText>{question}</QuestionText>
             <Meta>
               Posted by {author?.username || 'Nežinomas'} ·{' '}
-              {createdAt
-                ? new Date(createdAt).toLocaleDateString('lt-LT', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })
-                : 'Nežinoma data'}
+              {new Date(createdAt).toLocaleDateString('lt-LT', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
               {updatedAt && updatedAt !== createdAt && (
                 <span title={`Atnaujinta: ${new Date(updatedAt).toLocaleString('lt-LT')}`}> · redaguota</span>
               )}
@@ -154,9 +191,15 @@ const QuestionCard = ({ question, author, createdAt, updatedAt, _id, onUpdate, o
         )}
       </Content>
       <Actions>
+        <IconButton onClick={handleLike}>
+          <FaThumbsUp />
+          <Count>{localLikes}</Count>
+        </IconButton>
+        <IconButton onClick={handleDislike}>
+          <FaThumbsDown />
+          <Count>{localDislikes}</Count>
+        </IconButton>
         <IconButton><FaRegComment /></IconButton>
-        <IconButton><FaThumbsUp /></IconButton>
-        <IconButton><FaThumbsDown /></IconButton>
         {isAuthor && (
           <>
             <IconButton onClick={() => setIsEditing(!isEditing)}><FaEdit /></IconButton>
