@@ -57,6 +57,11 @@ const updateQuestion = async (req, res) => {
       return res.status(403).json({ message: 'Negalima redaguoti kito naudotojo klausimo' });
     }
 
+    if (existing.question === question) {
+      const populated = await existing.populate('author', 'username profilePic');
+      return res.status(200).json(populated);
+    }
+
     existing.question = question;
     const updated = await existing.save();
     const populated = await updated.populate('author', 'username profilePic');
@@ -97,7 +102,7 @@ const toggleLike = async (req, res) => {
       question.likes.push(userId);
     }
 
-    await question.save();
+    await question.save({ timestamps: false });
     const populated = await question.populate('author', 'username profilePic');
     res.status(200).json(populated);
   } catch (err) {
@@ -120,7 +125,7 @@ const toggleDislike = async (req, res) => {
       question.dislikes.push(userId);
     }
 
-    await question.save();
+    await question.save({ timestamps: false });
     const populated = await question.populate('author', 'username profilePic');
     res.status(200).json(populated);
   } catch (err) {

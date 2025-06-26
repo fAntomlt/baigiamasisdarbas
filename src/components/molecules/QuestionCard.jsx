@@ -192,7 +192,7 @@ const QuestionCard = ({
                 month: 'long',
                 day: 'numeric',
               })}
-              {updatedAt && updatedAt !== createdAt && (
+              {updatedAt && new Date(updatedAt).getTime() !== new Date(createdAt).getTime() && (
                 <span title={`Atnaujinta: ${new Date(updatedAt).toLocaleString('lt-LT')}`}>
                   {' '}
                   · redaguota
