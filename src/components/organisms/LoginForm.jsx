@@ -24,6 +24,12 @@ const RegisterText = styled.p`
   text-align: center;
   margin-top: 1rem;
   font-size: 0.9rem;
+  color:rgb(0, 0, 0);
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Error = styled.p`
@@ -96,7 +102,9 @@ const LoginForm = () => {
         <Button type="submit">{loading ? '⏳' : 'Prisijungti'}</Button>
       </form>
       {error && <Error>{error}</Error>}
-      <RegisterText>Jei neesate prisiregistravę – spauskite čia</RegisterText>
+      <RegisterText onClick={() => navigate('/register')}>
+        Jei neesate prisiregistravę – spauskite čia
+      </RegisterText>
     </Box>
   );
 };
