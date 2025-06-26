@@ -129,7 +129,7 @@ const QuestionDetailPage = () => {
   const fetchData = async () => {
     try {
       const [questionRes, answersRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/questions?page=1`, {
+        axios.get(`http://localhost:5000/api/questions/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
         axios.get(`http://localhost:5000/api/answers/${id}`, {
@@ -137,8 +137,7 @@ const QuestionDetailPage = () => {
         }),
       ]);
 
-      const q = questionRes.data.questions.find((q) => q._id === id);
-      setQuestion(q);
+      setQuestion(questionRes.data);
       setAnswers(answersRes.data);
     } catch (err) {
       console.error('Klaida kraunant duomenis:', err);
