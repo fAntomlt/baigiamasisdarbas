@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
@@ -8,6 +8,20 @@ const Wrapper = styled.div`
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
+`;
+
+const BackButton = styled.button`
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.2rem;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background: #ddd;
+  }
 `;
 
 const QuestionBox = styled.div`
@@ -104,6 +118,7 @@ const ActionButton = styled.button`
 const QuestionDetailPage = () => {
   const { id } = useParams();
   const { token, user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [newAnswer, setNewAnswer] = useState('');
@@ -188,6 +203,8 @@ const QuestionDetailPage = () => {
 
   return (
     <Wrapper>
+      <BackButton onClick={() => navigate('/home')}>GRĮŽTI</BackButton>
+
       <QuestionBox>
         <h2>{question.question}</h2>
         <p>Autorius: {question.author?.username || 'Nežinomas'}</p>
