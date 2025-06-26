@@ -1,6 +1,13 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { FaRegComment, FaThumbsUp, FaThumbsDown, FaEdit, FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import {
+  FaRegComment,
+  FaThumbsUp,
+  FaThumbsDown,
+  FaEdit,
+  FaTrash,
+} from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 
@@ -60,7 +67,7 @@ const IconButton = styled.button`
 
 const Count = styled.span`
   font-size: 0.8rem;
-  margin-left: 6px;
+  margin-left: 0.3rem;
 `;
 
 const EditInput = styled.textarea`
@@ -95,12 +102,14 @@ const QuestionCard = ({
   updatedAt,
   likes = [],
   dislikes = [],
+  comments = 0,
   _id,
   onUpdate,
   onDelete,
 }) => {
   const { user, token } = useContext(AuthContext);
   const isAuthor = user?._id === author?._id;
+  const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(question);
@@ -184,7 +193,10 @@ const QuestionCard = ({
                 day: 'numeric',
               })}
               {updatedAt && updatedAt !== createdAt && (
-                <span title={`Atnaujinta: ${new Date(updatedAt).toLocaleString('lt-LT')}`}> · redaguota</span>
+                <span title={`Atnaujinta: ${new Date(updatedAt).toLocaleString('lt-LT')}`}>
+                  {' '}
+                  · redaguota
+                </span>
               )}
             </Meta>
           </>
@@ -199,11 +211,18 @@ const QuestionCard = ({
           <FaThumbsDown />
           <Count>{localDislikes}</Count>
         </IconButton>
-        <IconButton><FaRegComment /></IconButton>
+        <IconButton onClick={() => navigate(`/questions/${_id}`)}>
+          <FaRegComment />
+          <Count>{comments}</Count>
+        </IconButton>
         {isAuthor && (
           <>
-            <IconButton onClick={() => setIsEditing(!isEditing)}><FaEdit /></IconButton>
-            <IconButton onClick={handleDelete}><FaTrash /></IconButton>
+            <IconButton onClick={() => setIsEditing(!isEditing)}>
+              <FaEdit />
+            </IconButton>
+            <IconButton onClick={handleDelete}>
+              <FaTrash />
+            </IconButton>
           </>
         )}
       </Actions>
