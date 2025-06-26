@@ -47,12 +47,40 @@ const SubmitButton = styled.button`
   }
 `;
 
-const Answer = styled.div`
-  padding: 1rem;
+const AnswerList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+`;
+
+const AnswerWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  padding: 1rem;
   background: white;
+`;
+
+const AnswerAvatar = styled.img`
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const AnswerContent = styled.div`
+  flex-grow: 1;
+`;
+
+const AnswerText = styled.p`
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem 0;
+`;
+
+const AnswerMeta = styled.small`
+  color: #666;
 `;
 
 const QuestionDetailPage = () => {
@@ -63,27 +91,27 @@ const QuestionDetailPage = () => {
   const [newAnswer, setNewAnswer] = useState('');
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const [questionRes, answersRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/questions`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        axios.get(`http://localhost:5000/api/answers/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
+    const fetchData = async () => {
+      try {
+        const [questionRes, answersRes] = await Promise.all([
+          axios.get(`http://localhost:5000/api/questions`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(`http://localhost:5000/api/answers/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-      const q = questionRes.data.find((q) => q._id === id);
-      setQuestion(q);
-      setAnswers(answersRes.data);
-    } catch (err) {
-      console.error('Klaida kraunant duomenis:', err);
-    }
-  };
+        const q = questionRes.data.find((q) => q._id === id);
+        setQuestion(q);
+        setAnswers(answersRes.data);
+      } catch (err) {
+        console.error('Klaida kraunant duomenis:', err);
+      }
+    };
 
-  fetchData();
-}, [id, token]);
+    fetchData();
+  }, [id, token]);
 
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
@@ -124,12 +152,19 @@ const QuestionDetailPage = () => {
       {answers.length === 0 ? (
         <p>Nėra atsakymų.</p>
       ) : (
-        answers.map((a) => (
-          <Answer key={a._id}>
-    <p>{a.content}</p> {/* ✅ correct key */}
-    <small>by {a.author?.username || 'Nežinomas'}</small>
-  </Answer>
-        ))
+        <AnswerList>
+          {answers.map((a) => (
+            <AnswerWrapper key={a._id}>
+              <AnswerAvatar src={a.author?.profilePic || 'https://ui-avatars.com/api/?name=User'} />
+              <AnswerContent>
+                <AnswerText>{a.content}</AnswerText>
+                <AnswerMeta>
+                  by {a.author?.username || 'Nežinomas'}
+                </AnswerMeta>
+              </AnswerContent>
+            </AnswerWrapper>
+          ))}
+        </AnswerList>
       )}
     </Wrapper>
   );
