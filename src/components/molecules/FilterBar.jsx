@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FaSortAmountUp, FaSortAmountDown } from 'react-icons/fa';
 
 const Bar = styled.div`
   display: flex;
@@ -10,16 +11,20 @@ const Bar = styled.div`
 `;
 
 const FilterButton = styled.button`
-  background-color: #f0f2f5;
+  background-color: ${({ active }) => (active ? '#1877f2' : '#f0f2f5')};
+  color: ${({ active }) => (active ? 'white' : 'black')};
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   transition: background 0.2s;
 
   &:hover {
-    background-color: #e2e6ea;
+    background-color: ${({ active }) => (active ? '#166fe5' : '#e2e6ea')};
   }
 `;
 
@@ -52,30 +57,56 @@ const DropdownItem = styled.button`
   }
 `;
 
-const FilterBar = () => {
+const FilterBar = ({ sortField, sortOrder, setSortField, setSortOrder }) => {
   const [showExtra, setShowExtra] = useState(false);
 
+  const toggleSort = (field) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortOrder('desc');
+    }
+  };
+
   return (
-    <Bar>
-      <FilterButton>Popular</FilterButton>
-      <FilterButton>Recent</FilterButton>
-      <FilterButton>Answered</FilterButton>
-      <FilterButton>Unanswered</FilterButton>
+  <Bar>
+    <FilterButton
+      onClick={() => toggleSort('comments')}
+      active={sortField === 'comments'}
+    >
+      Most Answered
+      {sortField === 'comments' &&
+        (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+    </FilterButton>
 
-      <div style={{ position: 'relative' }}>
-        <FilterButton onClick={() => setShowExtra(prev => !prev)}>
-          Extra ⬇️
-        </FilterButton>
+    <FilterButton
+      onClick={() => toggleSort('recent')}
+      active={sortField === 'recent'}
+    >
+      Recent
+      {sortField === 'recent' &&
+        (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+    </FilterButton>
 
-        {showExtra && (
-          <Dropdown>
-            <DropdownItem>By name</DropdownItem>
-            <DropdownItem>By tags</DropdownItem>
-          </Dropdown>
-        )}
-      </div>
-    </Bar>
-  );
+    <FilterButton>Answered</FilterButton>
+    <FilterButton>Unanswered</FilterButton>
+
+    <div style={{ position: 'relative' }}>
+      <FilterButton onClick={() => setShowExtra(prev => !prev)}>
+        Extra ⬇️
+      </FilterButton>
+
+      {showExtra && (
+        <Dropdown>
+          <DropdownItem>By name</DropdownItem>
+          <DropdownItem>By tags</DropdownItem>
+        </Dropdown>
+      )}
+    </div>
+  </Bar>
+);
+
 };
 
 export default FilterBar;

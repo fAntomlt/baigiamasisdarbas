@@ -12,7 +12,6 @@ const Wrapper = styled.div`
 const QuestionFeed = ({ questions, onUpdate, onDelete }) => {
   return (
     <Wrapper>
-      <FilterBar />
       {questions.map((q) => (
         <QuestionCard
   key={q._id}
