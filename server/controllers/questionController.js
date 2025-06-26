@@ -27,13 +27,35 @@ const getAllQuestions = async (req, res) => {
     const limit = 3;
     const skip = (page - 1) * limit;
 
-    const questions = await Question.find({}, '-__v')
+    const sortField = req.query.sort === 'comments' ? 'comments' : 'createdAt';
+    const sortOrder = req.query.order === 'asc' ? 1 : -1;
+    const filter = req.query.filter;
+    const nameSearch = req.query.name?.toLowerCase() || '';
+
+    // Base query
+    let query = {};
+
+    // Filter by answered/unanswered
+    if (filter === 'answered') {
+      query.comments = { $gt: 0 };
+    } else if (filter === 'unanswered') {
+      query.comments = { $eq: 0 };
+    }
+
+    // Filter by question name
+    if (nameSearch) {
+      query.question = { $regex: nameSearch, $options: 'i' };
+    }
+
+    // Count before pagination
+    const total = await Question.countDocuments(query);
+
+    // Apply everything
+    const questions = await Question.find(query, '-__v')
       .populate('author', 'username profilePic')
-      .sort({ createdAt: -1 })
+      .sort({ [sortField]: sortOrder })
       .skip(skip)
       .limit(limit);
-
-    const total = await Question.countDocuments();
 
     res.status(200).json({
       questions,
