@@ -1,12 +1,36 @@
-# React + Vite
+## 🛠️ Prerequisites
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Make sure you have the following installed:
 
-Currently, two official plugins are available:
+- Node.js (v18+ recommended)
+- npm or yarn
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 How to Run the Project
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Follow these steps **in order** to get the project running on your machine:
+
+```bash
+git clone https://github.com/fAntomlt/baigiamasisdarbas.git
+cd baigiamasisdarbas
+npm install
+cd server
+npm install
+npm run dev
+```
+Runs the Express API on http://localhost:5000
+
+
+Inside the server/ directory, create a .env file with:
+MONGO_URI=mongodb+srv://baigiamasis:inK5tOMuJIYfHI2J@cluster0.eynfaxj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+PORT=5000
+JWT_SECRET=forBaigiamasis1
+
+```bash
+cd ../
+npm run dev
+```
+Runs the frontend on http://localhost:5173
+
+---
