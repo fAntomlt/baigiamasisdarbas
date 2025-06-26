@@ -23,9 +23,9 @@ const createQuestion = async (req, res) => {
 
 const getAllQuestions = async (req, res) => {
   try {
-    const questions = await Question.find()
-      .populate('author', 'username profilePic')
-      .sort({ createdAt: -1 });
+    const questions = await Question.find({}, '-__v')
+  .populate('author', 'username profilePic')
+  .sort({ createdAt: -1 });
 
     res.status(200).json(questions);
   } catch (err) {

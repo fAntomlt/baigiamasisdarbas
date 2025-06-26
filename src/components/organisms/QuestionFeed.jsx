@@ -15,17 +15,18 @@ const QuestionFeed = ({ questions, onUpdate, onDelete }) => {
       <FilterBar />
       {questions.map((q) => (
         <QuestionCard
-          key={q._id}
-          _id={q._id}
-          question={q.question}
-          author={q.author}
-          createdAt={q.createdAt}
-          updatedAt={q.updatedAt}
-          likes={q.likes}
-          dislikes={q.dislikes}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-        />
+  key={q._id}
+  question={q.question}
+  author={q.author}
+  createdAt={q.createdAt}
+  updatedAt={q.updatedAt}
+  likes={q.likes}
+  dislikes={q.dislikes}
+  comments={q.comments}
+  _id={q._id}
+  onUpdate={onUpdate}
+  onDelete={onDelete}
+/>
       ))}
     </Wrapper>
   );
