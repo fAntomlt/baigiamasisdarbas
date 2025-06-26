@@ -32,25 +32,20 @@ const getAllQuestions = async (req, res) => {
     const filter = req.query.filter;
     const nameSearch = req.query.name?.toLowerCase() || '';
 
-    // Base query
     let query = {};
 
-    // Filter by answered/unanswered
     if (filter === 'answered') {
       query.comments = { $gt: 0 };
     } else if (filter === 'unanswered') {
       query.comments = { $eq: 0 };
     }
 
-    // Filter by question name
     if (nameSearch) {
       query.question = { $regex: nameSearch, $options: 'i' };
     }
 
-    // Count before pagination
     const total = await Question.countDocuments(query);
 
-    // Apply everything
     const questions = await Question.find(query, '-__v')
       .populate('author', 'username profilePic')
       .sort({ [sortField]: sortOrder })
