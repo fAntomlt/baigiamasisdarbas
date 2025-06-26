@@ -34,3 +34,6 @@ npm run dev
 Runs the frontend on http://localhost:5173
 
 ---
+## 🧭 Wireframe Preview
+
+![Wireframe](src/assets/wireframe.png)
