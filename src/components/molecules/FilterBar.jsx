@@ -57,7 +57,7 @@ const DropdownItem = styled.button`
   }
 `;
 
-const FilterBar = ({ sortField, sortOrder, setSortField, setSortOrder }) => {
+const FilterBar = ({ sortField, sortOrder, setSortField, setSortOrder, filterType, setFilterType }) => {
   const [showExtra, setShowExtra] = useState(false);
 
   const toggleSort = (field) => {
@@ -69,44 +69,62 @@ const FilterBar = ({ sortField, sortOrder, setSortField, setSortOrder }) => {
     }
   };
 
+  const toggleFilter = (type) => {
+    if (filterType === type) {
+      setFilterType(null);
+    } else {
+      setFilterType(type);
+    }
+  };
+
   return (
-  <Bar>
-    <FilterButton
-      onClick={() => toggleSort('comments')}
-      active={sortField === 'comments'}
-    >
-      Most Answered
-      {sortField === 'comments' &&
-        (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
-    </FilterButton>
-
-    <FilterButton
-      onClick={() => toggleSort('recent')}
-      active={sortField === 'recent'}
-    >
-      Recent
-      {sortField === 'recent' &&
-        (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
-    </FilterButton>
-
-    <FilterButton>Answered</FilterButton>
-    <FilterButton>Unanswered</FilterButton>
-
-    <div style={{ position: 'relative' }}>
-      <FilterButton onClick={() => setShowExtra(prev => !prev)}>
-        Extra ⬇️
+    <Bar>
+      <FilterButton
+        onClick={() => toggleSort('comments')}
+        active={sortField === 'comments'}
+      >
+        Most Answered
+        {sortField === 'comments' &&
+          (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
       </FilterButton>
 
-      {showExtra && (
-        <Dropdown>
-          <DropdownItem>By name</DropdownItem>
-          <DropdownItem>By tags</DropdownItem>
-        </Dropdown>
-      )}
-    </div>
-  </Bar>
-);
+      <FilterButton
+        onClick={() => toggleSort('recent')}
+        active={sortField === 'recent'}
+      >
+        Recent
+        {sortField === 'recent' &&
+          (sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+      </FilterButton>
 
+      <FilterButton
+        onClick={() => toggleFilter('answered')}
+        active={filterType === 'answered'}
+      >
+        Answered
+      </FilterButton>
+
+      <FilterButton
+        onClick={() => toggleFilter('unanswered')}
+        active={filterType === 'unanswered'}
+      >
+        Unanswered
+      </FilterButton>
+
+      <div style={{ position: 'relative' }}>
+        <FilterButton onClick={() => setShowExtra(prev => !prev)}>
+          Extra ⬇️
+        </FilterButton>
+
+        {showExtra && (
+          <Dropdown>
+            <DropdownItem>By name</DropdownItem>
+            <DropdownItem>By tags</DropdownItem>
+          </Dropdown>
+        )}
+      </div>
+    </Bar>
+  );
 };
 
 export default FilterBar;

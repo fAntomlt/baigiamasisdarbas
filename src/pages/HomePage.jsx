@@ -67,6 +67,7 @@ const HomePage = () => {
   const [questions, setQuestions] = useState([]);
   const [sortField, setSortField] = useState('recent');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [filterType, setFilterType] = useState(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -99,8 +100,13 @@ const HomePage = () => {
     setQuestions((prev) => prev.filter((q) => q._id !== id));
   };
 
-  // 🧠 Sorting logic
-  const sortedQuestions = [...questions].sort((a, b) => {
+  const filteredQuestions = questions.filter((q) => {
+    if (filterType === 'answered') return q.comments > 0;
+    if (filterType === 'unanswered') return q.comments === 0;
+    return true;
+  });
+
+  const sortedQuestions = [...filteredQuestions].sort((a, b) => {
     if (sortField === 'comments') {
       return sortOrder === 'asc' ? a.comments - b.comments : b.comments - a.comments;
     } else if (sortField === 'recent') {
@@ -112,33 +118,35 @@ const HomePage = () => {
   });
 
   return (
-  <PageWrapper>
-    <Header><span>LifeBook</span></Header>
+    <PageWrapper>
+      <Header><span>LifeBook</span></Header>
 
-    <Content>
-      <MainSection>
-        <FilterBar
-          sortField={sortField}
-          sortOrder={sortOrder}
-          setSortField={setSortField}
-          setSortOrder={setSortOrder}
-        />
+      <Content>
+        <MainSection>
+          <FilterBar
+            sortField={sortField}
+            sortOrder={sortOrder}
+            setSortField={setSortField}
+            setSortOrder={setSortOrder}
+            filterType={filterType}
+            setFilterType={setFilterType}
+          />
 
-        <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
+          <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
 
-        <QuestionFeed
-          questions={sortedQuestions}
-          onUpdate={handleQuestionUpdated}
-          onDelete={handleQuestionDeleted}
-        />
-      </MainSection>
+          <QuestionFeed
+            questions={sortedQuestions}
+            onUpdate={handleQuestionUpdated}
+            onDelete={handleQuestionDeleted}
+          />
+        </MainSection>
 
-      <SidebarSection>
-        <UserSidebar />
-      </SidebarSection>
-    </Content>
-  </PageWrapper>
-);
+        <SidebarSection>
+          <UserSidebar />
+        </SidebarSection>
+      </Content>
+    </PageWrapper>
+  );
 };
 
 export default HomePage;
