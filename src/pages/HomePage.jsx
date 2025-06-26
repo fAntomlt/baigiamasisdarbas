@@ -68,6 +68,7 @@ const HomePage = () => {
   const [sortField, setSortField] = useState('recent');
   const [sortOrder, setSortOrder] = useState('desc');
   const [filterType, setFilterType] = useState(null);
+  const [nameSearch, setNameSearch] = useState('');
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -101,8 +102,9 @@ const HomePage = () => {
   };
 
   const filteredQuestions = questions.filter((q) => {
-    if (filterType === 'answered') return q.comments > 0;
-    if (filterType === 'unanswered') return q.comments === 0;
+    if (filterType === 'answered' && q.comments === 0) return false;
+    if (filterType === 'unanswered' && q.comments > 0) return false;
+    if (nameSearch && !q.question.toLowerCase().includes(nameSearch.toLowerCase())) return false;
     return true;
   });
 
@@ -130,6 +132,8 @@ const HomePage = () => {
             setSortOrder={setSortOrder}
             filterType={filterType}
             setFilterType={setFilterType}
+            nameSearch={nameSearch}
+            setNameSearch={setNameSearch}
           />
 
           <NewQuestionForm onQuestionCreated={handleQuestionCreated} />
