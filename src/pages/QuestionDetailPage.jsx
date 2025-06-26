@@ -125,6 +125,7 @@ const QuestionDetailPage = () => {
   const [editingAnswerId, setEditingAnswerId] = useState(null);
   const [editingContent, setEditingContent] = useState('');
 
+  // Fetch question and its answers on component mount
   useEffect(() => {
   const fetchData = async () => {
     try {
@@ -147,6 +148,7 @@ const QuestionDetailPage = () => {
   fetchData();
 }, [id, token]);
 
+// Handle answer submission
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
     if (!newAnswer.trim()) return;
@@ -164,11 +166,13 @@ const QuestionDetailPage = () => {
     }
   };
 
+  // Enable editing mode for an answer
   const handleEdit = (answerId, currentContent) => {
     setEditingAnswerId(answerId);
     setEditingContent(currentContent);
   };
 
+  // Submit edited answer
   const handleEditSubmit = async (answerId) => {
     try {
       const res = await axios.put(
@@ -186,6 +190,7 @@ const QuestionDetailPage = () => {
     }
   };
 
+  // Delete an answer
   const handleDelete = async (answerId) => {
     if (!window.confirm('Ar tikrai norite ištrinti šį atsakymą?')) return;
     try {
@@ -198,6 +203,7 @@ const QuestionDetailPage = () => {
     }
   };
 
+  // Show loading if question is still being fetched
   if (!question) return <Wrapper>Loading...</Wrapper>;
 
   return (
